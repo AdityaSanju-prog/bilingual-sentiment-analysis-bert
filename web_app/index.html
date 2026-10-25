@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilingual BERT Sentiment Analysis Studio — Unilyf Multilingual Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for benchmarks and attention visualizer -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header Nav -->
+        <header class="app-header">
+            <div class="logo-group">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h1>BERT Sentiment Studio</h1>
+                    <p class="header-subtitle"><i class="fa-solid fa-sparkles"></i> Unilyf Bilingual & Code-Mixed Sentiment Engine (EN • HI • Hinglish)</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-purple"><i class="fa-solid fa-language"></i> Bilingual (EN / HI / Hinglish)</span>
+                <span class="badge badge-cyan"><i class="fa-solid fa-bolt"></i> mBERT / IndicBERT Ready</span>
+                <span class="badge badge-emerald"><i class="fa-solid fa-check-circle"></i> 3-Class Sentiment</span>
+            </div>
+        </header>
+
+        <!-- Main Content View Areas -->
+        <main class="main-content">
+            <!-- Live Interactive Predictor -->
+            <section id="interactive-demo" class="tab-pane active">
+                <div class="grid-2col">
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h3><i class="fa-solid fa-pen-to-square"></i> Input Text Sample</h3>
+                            </div>
+                            <div class="header-status-group">
+                                <span id="input-lang-badge" class="badge badge-purple">
+                                    <i class="fa-solid fa-globe"></i> <span id="lang-indicator">English (EN)</span>
+                                </span>
+                                <span id="input-topic-badge" class="badge badge-amber">
+                                    <i class="fa-solid fa-graduation-cap"></i> <span id="topic-indicator">Campus</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <label for="sentiment-input" class="form-label">
+                                Enter English, Hindi (हिंदी), or Hinglish text (updates instantly as you type):
+                            </label>
+                            <textarea id="sentiment-input" rows="4"
+                                placeholder="Type something in English, Hindi (हिंदी), or Hinglish... e.g. 'Exam bahut accha gaya!' or 'कमरे साफ और बड़े हैं, बहुत पसंद आए!'"></textarea>
+
+                            <!-- Preset Filter Tabs -->
+                            <div class="preset-section">
+                                <div class="preset-header-row">
+                                    <span class="preset-label"><i class="fa-solid fa-sliders"></i> Bilingual Presets:</span>
+                                    <div class="filter-tab-pills">
+                                        <button class="filter-tab active" data-filter="all">All</button>
+                                        <button class="filter-tab" data-filter="en">🇬🇧 English</button>
+                                        <button class="filter-tab" data-filter="hi">🇮🇳 हिंदी</button>
+                                        <button class="filter-tab" data-filter="hinglish">🔤 Hinglish</button>
+                                    </div>
+                                </div>
+
+                                <div class="preset-buttons" id="preset-buttons-container">
+                                    <!-- English Presets -->
+                                    <button class="preset-btn" data-lang="en"
+                                        data-text="Great news, the results are out and the portal worked smoothly! #unilyf 🎉">
+                                        <i class="fa-solid fa-face-smile text-pos"></i> [EN] Results Smooth 🎉
+                                    </button>
+                                    <button class="preset-btn" data-lang="en"
+                                        data-text="Exam schedule got changed again with just one day notice, this is so frustrating. 😡">
+                                        <i class="fa-solid fa-face-frown text-neg"></i> [EN] Exam Reschedule 😡
+                                    </button>
+                                    <button class="preset-btn" data-lang="en"
+                                        data-text="Mid-sem exams will begin from next Monday as per the notice. 📌">
+                                        <i class="fa-solid fa-face-meh text-neu"></i> [EN] Mid-Sem Notice 📌
+                                    </button>
+
+                                    <!-- Hindi (Devanagari) Presets -->
+                                    <button class="preset-btn" data-lang="hi"
+                                        data-text="अपडेट: नए हॉस्टल के कमरे साफ और बड़े हैं, बहुत पसंद आए! 🔥">
+                                        <i class="fa-solid fa-face-smile text-pos"></i> [HI] कमरे साफ व बड़े 🔥
+                                    </button>
+                                    <button class="preset-btn" data-lang="hi"
+                                        data-text="परीक्षा की तारीख फिर से बदल दी गई, सिर्फ एक दिन पहले बताया, बहुत गुस्सा आ रहा है। 😡">
+                                        <i class="fa-solid fa-face-frown text-neg"></i> [HI] परीक्षा तारीख गुस्सा 😡
+                                    </button>
+                                    <button class="preset-btn" data-lang="hi"
+                                        data-text="मेस के खाने की क्वालिटी हर हफ्ते खराब होती जा रही है, बहुत निराशाजनक है। 😞">
+                                        <i class="fa-solid fa-face-frown text-neg"></i> [HI] मेस खाना खराब 😞
+                                    </button>
+                                    <button class="preset-btn" data-lang="hi"
+                                        data-text="लाइब्रेरी परीक्षा के दौरान आधी रात तक खुली रहेगी। 🗓️">
+                                        <i class="fa-solid fa-face-meh text-neu"></i> [HI] लाइब्रेरी नोटिस 🗓️
+                                    </button>
+
+                                    <!-- Hinglish Presets -->
+                                    <button class="preset-btn" data-lang="hinglish"
+                                        data-text="Mast news, result aa gaya aur portal bhi ekdum smooth chala! 🎉">
+                                        <i class="fa-solid fa-face-smile text-pos"></i> [Hinglish] Mast Result 🎉
+                                    </button>
+                                    <button class="preset-btn" data-lang="hinglish"
+                                        data-text="Exam ki date phir se change ho gayi, sirf ek din pehle bataya, bahut frustrating hai. 😤">
+                                        <i class="fa-solid fa-face-frown text-neg"></i> [Hinglish] Frustrating Date 😤
+                                    </button>
+                                    <button class="preset-btn" data-lang="hinglish"
+                                        data-text="Campus WiFi is down again during assignment submission, bilkul theek nahi hai. 😡">
+                                        <i class="fa-solid fa-face-frown text-neg"></i> [Hinglish] WiFi Down 😡
+                                    </button>
+                                    <button class="preset-btn" data-lang="hinglish"
+                                        data-text="Hostel room allotment ki list notice board pe lagayi jayegi. 📌">
+                                        <i class="fa-solid fa-face-meh text-neu"></i> [Hinglish] Room List 📌
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button id="analyze-btn" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-bolt"></i> Re-Calculate Sentiment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Prediction Result Card -->
+                    <div class="card glass-card result-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-pie"></i> Classification Result</h3>
+                            <div class="result-badges-group">
+                                <span id="result-lang-badge" class="badge badge-purple">🇬🇧 English</span>
+                                <span id="result-topic-badge" class="badge badge-amber">🎓 Exams</span>
+                                <span id="predicted-badge" class="badge badge-pos">😊 Happy / Positive</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="confidence-hero">
+                                <div class="confidence-value" id="confidence-val">98.4%</div>
+                                <div class="confidence-subline">
+                                    <span>Prediction Confidence</span>
+                                    <span id="latency-tag" class="latency-pill"><i class="fa-solid fa-bolt"></i> 0.3 ms (Instant)</span>
+                                </div>
+                            </div>
+
+                            <div class="prob-bars">
+                                <div class="prob-row">
+                                    <div class="prob-meta">
+                                        <span><i class="fa-solid fa-face-smile text-pos"></i> Happy / Positive</span>
+                                        <span id="prob-pos-val">98.4%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill bar-pos" id="bar-pos" style="width: 98.4%;"></div>
+                                    </div>
+                                </div>
+                                <div class="prob-row">
+                                    <div class="prob-meta">
+                                        <span><i class="fa-solid fa-face-meh text-neu"></i> Neutral / Objective</span>
+                                        <span id="prob-neu-val">1.2%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill bar-neu" id="bar-neu" style="width: 1.2%;"></div>
+                                    </div>
+                                </div>
+                                <div class="prob-row">
+                                    <div class="prob-meta">
+                                        <span><i class="fa-solid fa-face-frown text-neg"></i> Sad / Negative</span>
+                                        <span id="prob-neg-val">0.4%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill bar-neg" id="bar-neg" style="width: 0.4%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Extracted Linguistic & Topic Drivers -->
+                            <div class="drivers-box">
+                                <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Detected Linguistic Signals:</h4>
+                                <div id="detected-tokens" class="tokens-flow">
+                                    <span class="signal-tag signal-pos">happy (+2.8)</span>
+                                </div>
+                            </div>
+
+                            <div class="rationale-box">
+                                <h4><i class="fa-solid fa-lightbulb"></i> Analysis Rationale:</h4>
+                                <p id="rationale-text">The text contains high-affinity positive terms triggering strong activation in the positive sentiment head.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>NLP Bilingual BERT Sentiment Analysis Studio • Supports English, Hindi (Devanagari) & Hinglish (Code-Mixed) • Sub-millisecond Inference</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

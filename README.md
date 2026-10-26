@@ -3,6 +3,7 @@
 **Course**: Natural Language Processing (NLP)  
 **Topic**: 3-Class Sentiment Classification (Positive, Negative, Neutral) using BERT & Transformers  
 **Frameworks**: PyTorch, HuggingFace `transformers`, Scikit-Learn, Pandas, Matplotlib, HTML5/CSS3/JavaScript  
+**Live Demo**: [![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=for-the-badge&logo=vercel)](https://bilingual-sentiment-analysis-bert.vercel.app) • [https://bilingual-sentiment-analysis-bert.vercel.app](https://bilingual-sentiment-analysis-bert.vercel.app)
 
 ---
 
@@ -82,7 +83,8 @@ jupyter notebook nlp_sentiment_assignment.ipynb
 ```
 
 ### 3. Launch Interactive Web Dashboard
-You can run the multi-threaded web server or launch static serving:
+- **Live Vercel Production Site**: [https://bilingual-sentiment-analysis-bert.vercel.app](https://bilingual-sentiment-analysis-bert.vercel.app)
+- **Local Multi-Threaded Server**:
 ```bash
 python serve.py
 ```
